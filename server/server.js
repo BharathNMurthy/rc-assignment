@@ -12,15 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoConnection.create();
 
-app.get("/healthcheck", (req, res) => {
-  if (mongoose.connection.readyState) {
-    res.status(200).end("I am healthy");
-  } else {
-    res.status(500).end("I am unhealthy");
-  }
+app.get("/healthcheck", () => {
+  logger.getLogger().info(`App is running`);
 });
 
 app.use("/s/api", routes);
+app.use("/", (req, res) => {
+  res.sendFile(__dirname + "/build/index.html");
+});
+app.use(express.static(__dirname + "/build"));
+
 
 app.listen(port, () => {
   return logger.getLogger().info(`Listening on port ${port}`);

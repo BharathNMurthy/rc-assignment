@@ -2,7 +2,7 @@
   "name": "rc-assignment",
   "version": "1.0.0",
   "scripts": {
-	"client": "cd client && yarn start",
+    "client": "cd client && yarn start",
     "server": "cd server && yarn start",
     "build-react": "cd client && yarn build",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
@@ -12,5 +12,9 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "concurrently": "^4.0.1"
+  },
+  "dependencies": {
+    "build-react": "^1.0.1",
+    "yarn": "^1.15.2"
   }
 }
