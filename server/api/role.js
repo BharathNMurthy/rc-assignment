@@ -1,12 +1,14 @@
 const { Router } = require("express");
 const router = new Router();
-const RolessModel = require("../persistence/model/roles");
+const shortid = require("shortid");
+
+const RolesModel = require("../persistence/model/roles");
 
 const saveRole = async (req, res) => {
   const payload = JSON.parse(JSON.stringify(req.body));
-  console.log("saveRole called..", payload);
 
-  const roles = new RolessModel({
+  const roles = new RolesModel({
+    docId: shortid.generate(),
     role: payload.role,
     permission: payload.permission
   });

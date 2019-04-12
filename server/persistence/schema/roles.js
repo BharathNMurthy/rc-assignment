@@ -1,4 +1,5 @@
 const schema = {
+	docId: String,
 	role: String,
 	permission: String
 };

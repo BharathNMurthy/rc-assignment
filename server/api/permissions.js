@@ -1,17 +1,17 @@
 const { Router } = require("express");
 const router = new Router();
+const shortid = require("shortid");
 const Permissions = require("../persistence/permissions");
 const PermissionsModel = require("../persistence/model/permissions");
 
 const getPermissions = async (req, res) => {
-  console.log("getPermissions called..");
 
   const permissionsRes = await Permissions.findByAttr({})
     .then(result => {
       const parsedResult = JSON.parse(JSON.stringify(result));
       let permissionsList = [];
       if (parsedResult.length > 0) {
-        permissionsList = parsedResult.map(perm => perm.permission);
+        return parsedResult;
       }
       return permissionsList;
     })
@@ -24,9 +24,9 @@ const getPermissions = async (req, res) => {
 
 const savePermission = async (req, res) => {
   const payload = JSON.parse(JSON.stringify(req.body));
-  console.log("savePermission called..", payload);
 
   const permissions = new PermissionsModel({
+    docId: shortid.generate(),
     resource: payload.resource,
     module: payload.module,
     permission: payload.permission
