@@ -16,7 +16,7 @@ const SelectField = props => (
         onChange={props.onChange}
         value={props.value}
       >
-        {props.menuItems.map(menu => (
+        {props.menuItems.map((menu, index) => (
           <option key={menu} value={menu}>
             {menu}
           </option>

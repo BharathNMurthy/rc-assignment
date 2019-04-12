@@ -1,0 +1,27 @@
+.home {
+  margin-top: 20px;
+  width: 500px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  margin: auto;
+}
+.content {
+ margin-top: 20px;
+  width: 500px;
+  padding-left: 60px
+}
+.links-wrapper {
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.link {
+  margin: 12px;
+  padding: 12px;
+}
