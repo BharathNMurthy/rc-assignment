@@ -20,3 +20,5 @@ Steps to build app:
 Steps to run app:
     *   `docker-compose up`
 ```
+
+The app will be available at http://localhost:5000/
