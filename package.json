@@ -4,7 +4,8 @@
   "scripts": {
     "install": "cd server;npm i;cd ..;cd client;npm i",
     "build-react": "cd client && node_modules/.bin/yarn build",
-    "server": "",
+    "server": "cd server; yarn start",
+    "client": "cd client; yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "license": "UNLICENSED",

@@ -12,7 +12,11 @@ const getPermissions = async (req, res) => {
       const parsedResult = JSON.parse(JSON.stringify(result));
       let permissionsList = [];
       if (parsedResult.length > 0) {
-        return parsedResult;
+        permissionsList = parsedResult.map(perm => ({
+          resource: perm.resource,
+          module: perm.resource,
+          permission: perm.permission
+        }));
       }
       return permissionsList;
     })
@@ -26,6 +30,11 @@ const getPermissions = async (req, res) => {
 
 const savePermission = async (req, res) => {
   const payload = JSON.parse(JSON.stringify(req.body));
+
+  if (!payload.resource || !payload.module || !payload.permission) {
+    console.log('payload>>',payload)
+    res.status(400).json({ success: false, errorMessage: "Invalid data" });
+  }
 
   const permissions = new PermissionsModel({
     docId: shortid.generate(),
@@ -44,7 +53,7 @@ const savePermission = async (req, res) => {
       logger
         .getLogger()
         .error(`Error occured while saving to Db with error: ${err}`);
-      res.status(500).json({ success: false , errorMessage:'DB Error'});
+      res.status(500).json({ success: false, errorMessage: "DB Error" });
     });
 };
 

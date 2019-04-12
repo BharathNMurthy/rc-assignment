@@ -8,6 +8,10 @@ const RolesModel = require("../persistence/model/roles");
 const saveRole = async (req, res) => {
   const payload = JSON.parse(JSON.stringify(req.body));
 
+  if (!payload.role || !payload.permission) {
+    res.status(400).json({ success: false, errorMessage: "Invalid data" });
+  }
+
   const roles = new RolesModel({
     docId: shortid.generate(),
     role: payload.role,

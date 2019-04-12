@@ -11,19 +11,7 @@ class PermissionForm extends Component {
       module: { value: "", error: false, errorMessage: "" },
       permission: { value: "", error: false, errorMessage: "" }
     },
-
     responseToPost: ""
-  };
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res }))
-      .catch(err => console.log(err));
-  }
-  callApi = async () => {
-    const response = await fetch("/s/api/permissions");
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
   };
 
   handleChange = (e, key) => {
@@ -67,7 +55,6 @@ class PermissionForm extends Component {
       this.checkError(fields.permission);
 
     if (!isError) {
-      console.log(">>>>>");
       this.setState({ isSubmitting: true });
       const response = await fetch("/s/api/permissions", {
         method: "POST",
