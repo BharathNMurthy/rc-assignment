@@ -4,7 +4,9 @@
   "scripts": {
 	"client": "cd client && yarn start",
     "server": "cd server && yarn start",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "build-react": "cd client && yarn build",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "build-docker": "cd client && npm i && npm run build && cd .. && cd server && npm i && cd .. && docker build -t bharath/rc-assignment ."
   },
   "license": "UNLICENSED",
   "devDependencies": {
