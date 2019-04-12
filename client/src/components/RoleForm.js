@@ -1,51 +1,97 @@
 import React, { Component } from "react";
+import "./Form.css";
+import TextField from "./common/TextField";
+import Button from "./common/Button";
 
 class RoleForm extends Component {
   state = {
-    response: "",
-    role: "",
-    permission: "",
+    isSubmitting: false,
+    fields: {
+      role: { value: "", error: false, errorMessage: "" },
+      permission: { value: "", error: false, errorMessage: "" }
+    },
     responseToPost: ""
   };
+  handleChange = (e, key) => {
+    let { fields } = this.state;
+    let value = e.target.value.trim();
+    let updatedValue = Object.assign({}, fields[key]);
+    if (value && value.length > 0) {
+      updatedValue.value = value;
+      updatedValue.error = false;
+      updatedValue.errorMessage = "";
+    } else {
+      updatedValue.value = value;
+      updatedValue.error = true;
+      updatedValue.errorMessage = "Required";
+    }
+
+    fields[key] = updatedValue;
+
+    this.setState({ fields });
+  };
+
+  checkError = field => field.error || !field.value;
 
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/s/api/role", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        role: this.state.role,
-        permission: this.state.permission
-      })
+    const { fields } = this.state;
+
+    const updateFields = Object.assign({}, fields);
+
+    Object.keys(fields).forEach(field => {
+      if (!fields[field].value || fields[field].length > 0) {
+        updateFields[field].error = true;
+        updateFields[field].errorMessage = "Required";
+      }
     });
-    const body = await response.text();
-    this.setState({ responseToPost: body });
+    this.setState({ fields: updateFields });
+
+    let isError =
+      this.checkError(fields.role) || this.checkError(fields.permission);
+
+    if (!isError) {
+      console.log(">>>>>");
+      this.setState({ isSubmitting: true });
+
+      // const response = await fetch("/s/api/role", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify({
+      //     role: this.state.role,
+      //     permission: this.state.permission
+      //   })
+      // });
+      // const body = await response.text();
+      // this.setState({ isSubmitting:false,responseToPost: body });
+    }
   };
   render() {
     return (
-      <div className="App">
-        <p>{this.state.response}</p>
+      <div className="form-wrapper">
         <form onSubmit={this.handleSubmit}>
-          <p>
-            <strong>Role:</strong>
-          </p>
-          <input
+          <TextField
+            label="Role"
             type="text"
-            value={this.state.role}
-            onChange={e => this.setState({ role: e.target.value })}
+            name="role"
+            value={this.state.fields.role.value}
+            onChange={e => this.handleChange(e, "role")}
+            error={this.state.fields.role.error}
+            errormessage={this.state.fields.role.errorMessage}
+          />
+          <TextField
+            label="Permission"
+            type="text"
+            name="permission"
+            value={this.state.fields.permission.value}
+            onChange={e => this.handleChange(e, "permission")}
+            error={this.state.fields.permission.error}
+            errormessage={this.state.fields.permission.errorMessage}
           />
 
-          <p>
-            <strong>Permission:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.permission}
-            onChange={e => this.setState({ permission: e.target.value })}
-          />
-          <button type="submit">Submit</button>
+          <Button type="submit" label="Submit" />
         </form>
         <p>{this.state.responseToPost}</p>
       </div>
