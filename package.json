@@ -6,6 +6,7 @@
     "server": "cd server && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
+  "license": "UNLICENSED",
   "devDependencies": {
     "concurrently": "^4.0.1"
   }

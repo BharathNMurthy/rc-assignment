@@ -23,4 +23,5 @@ const findByAttr = query =>
       resolve(doc);
     });
   });
+
 module.exports = { update, findById, findByAttr };
