@@ -17,11 +17,11 @@ app.get("/healthcheck", () => {
 });
 
 app.use("/s/api", routes);
+app.use(express.static(__dirname + "/build"));
+
 app.use("/", (req, res) => {
   res.sendFile(__dirname + "/build/index.html");
 });
-app.use(express.static(__dirname + "/build"));
-
 
 app.listen(port, () => {
   return logger.getLogger().info(`Listening on port ${port}`);
