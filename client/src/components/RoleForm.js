@@ -19,7 +19,14 @@ class RoleForm extends Component {
   componentDidMount() {
     this.callApi()
       .then(res => {
-        this.setState({ permissions: res, disableButton: res.length === 0 });
+        let permissions = [];
+        if (res.length > 0) {
+          permissions = res.map(permission => permission.permission);
+        }
+        this.setState({
+          permissions: permissions,
+          disableButton: res.length === 0
+        });
       })
       .catch(err => console.log(err));
   }
