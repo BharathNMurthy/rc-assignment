@@ -3,9 +3,9 @@ const router = new Router();
 const shortid = require("shortid");
 const Permissions = require("../persistence/permissions");
 const PermissionsModel = require("../persistence/model/permissions");
+const logger = require("../logging/logs");
 
 const getPermissions = async (req, res) => {
-
   const permissionsRes = await Permissions.findByAttr({})
     .then(result => {
       const parsedResult = JSON.parse(JSON.stringify(result));
@@ -16,9 +16,8 @@ const getPermissions = async (req, res) => {
       return permissionsList;
     })
     .catch(err => {
-      console.log("err>>", err);
+      logger.getLogger().info("Error occurred while fetching permissions", err);
     });
-  console.log("permissionsRes>", permissionsRes);
   res.send(permissionsRes);
 };
 
@@ -34,7 +33,9 @@ const savePermission = async (req, res) => {
 
   permissions.save(err => {
     if (err) {
-      console.log(`Error occured while saving to Db with error: ${err}`);
+      logger
+        .getLogger()
+        .info(`Error occured while saving to Db with error: ${err}`);
     }
   });
 

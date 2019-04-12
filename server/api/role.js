@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = new Router();
 const shortid = require("shortid");
+const logger = require("../logging/logs");
 
 const RolesModel = require("../persistence/model/roles");
 
@@ -15,7 +16,9 @@ const saveRole = async (req, res) => {
 
   roles.save(err => {
     if (err) {
-      console.log(`Error occured while saving to Db with error: ${err}`);
+      logger
+        .getLogger()
+        .info(`Error occured while saving to Db with error: ${err}`);
     }
   });
 
