@@ -69,19 +69,19 @@ class PermissionForm extends Component {
     if (!isError) {
       console.log(">>>>>");
       this.setState({ isSubmitting: true });
-      // const response = await fetch("/s/api/permissions", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     resource: fields.resource.value,
-      //     module: fields.module.value,
-      //     permission: fields.permission.value
-      //   })
-      // });
-      // const body = await response.text();
-      // this.setState({ isSubmitting:false,responseToPost: body });
+      const response = await fetch("/s/api/permissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          resource: fields.resource.value,
+          module: fields.module.value,
+          permission: fields.permission.value
+        })
+      });
+      const body = await response.text();
+      this.setState({ isSubmitting: false, responseToPost: body });
     }
   };
   render() {
@@ -116,7 +116,11 @@ class PermissionForm extends Component {
             error={this.state.fields.permission.error}
             errormessage={this.state.fields.permission.errorMessage}
           />
-          <Button type="submit" label="Submit" />
+          <Button
+            type="submit"
+            label="Submit"
+            disabled={this.state.isSubmitting}
+          />
         </form>
         <p>{this.state.responseToPost}</p>
       </div>

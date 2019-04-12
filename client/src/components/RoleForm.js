@@ -2,15 +2,33 @@ import React, { Component } from "react";
 import "./Form.css";
 import TextField from "./common/TextField";
 import Button from "./common/Button";
+import SelectField from "./common/SelectField";
 
 class RoleForm extends Component {
   state = {
     isSubmitting: false,
+    disableButton: false,
     fields: {
       role: { value: "", error: false, errorMessage: "" },
       permission: { value: "", error: false, errorMessage: "" }
     },
+    permissions: [],
     responseToPost: ""
+  };
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => {
+        this.setState({ permissions: res, disableButton: res.length === 0 });
+      })
+      .catch(err => console.log(err));
+  }
+  callApi = async () => {
+    const response = await fetch("/s/api/permissions");
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+    return body;
   };
   handleChange = (e, key) => {
     let { fields } = this.state;
@@ -51,21 +69,20 @@ class RoleForm extends Component {
       this.checkError(fields.role) || this.checkError(fields.permission);
 
     if (!isError) {
-      console.log(">>>>>");
       this.setState({ isSubmitting: true });
 
-      // const response = await fetch("/s/api/role", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     role: this.state.role,
-      //     permission: this.state.permission
-      //   })
-      // });
-      // const body = await response.text();
-      // this.setState({ isSubmitting:false,responseToPost: body });
+      const response = await fetch("/s/api/role", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          role: fields.role.value,
+          permission: fields.permission.value
+        })
+      });
+      const body = await response.text();
+      this.setState({ isSubmitting: false, responseToPost: body });
     }
   };
   render() {
@@ -81,17 +98,26 @@ class RoleForm extends Component {
             error={this.state.fields.role.error}
             errormessage={this.state.fields.role.errorMessage}
           />
-          <TextField
-            label="Permission"
-            type="text"
-            name="permission"
-            value={this.state.fields.permission.value}
-            onChange={e => this.handleChange(e, "permission")}
-            error={this.state.fields.permission.error}
-            errormessage={this.state.fields.permission.errorMessage}
-          />
+          {this.state.permissions.length > 0 ? (
+            <SelectField
+              label="Permission"
+              type="text"
+              name="permission"
+              menuItems={this.state.permissions}
+              value={this.state.fields.permission.value}
+              onChange={e => this.handleChange(e, "permission")}
+              error={this.state.fields.permission.error}
+              errormessage={this.state.fields.permission.errorMessage}
+            />
+          ) : (
+            <div className="helper-text">Note: Please add permission</div>
+          )}
 
-          <Button type="submit" label="Submit" />
+          <Button
+            type="submit"
+            label="Submit"
+            disabled={this.state.isSubmitting || this.state.disableButton}
+          />
         </form>
         <p>{this.state.responseToPost}</p>
       </div>

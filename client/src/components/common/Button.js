@@ -3,7 +3,7 @@ import "./Button.css";
 
 const Button = props => (
   <div className="btn-wrapper">
-    <button className='btn' type={props.type}>{props.label}</button>
+    <button className='btn' type={props.type} disabled={props.disabled}>{props.label} </button>
   </div>
 );
 
