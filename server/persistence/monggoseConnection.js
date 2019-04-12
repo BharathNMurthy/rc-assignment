@@ -4,7 +4,7 @@ const logger = require("../logging/logs");
 const create = () => {
   mongoose.Promise = global.Promise;
   const database = "reynen";
-  const mongoUri = "mongodb://localhost:27017";
+  const mongoUri = "mongodb://127.0.0.1:27019";
   const uri = `${mongoUri}/${database}`;
 
   const mongoOptions = {};
