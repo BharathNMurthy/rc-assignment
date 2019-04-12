@@ -2,8 +2,7 @@
 	"name": "rc-api",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "nodemon server.js",
-		"dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+		"start": "nodemon server.js"
 	},
 	"license": "UNLICENSED",
 	"dependencies": {
@@ -12,7 +11,8 @@
 		"mongoose": "^5.5.1",
 		"nodemon": "^1.18.11",
 		"shortid": "^2.2.14",
-		"winston": "^3.2.1"
+		"winston": "^3.2.1",
+		"yarn": "^1.15.2"
 	},
 	"devDependencies": {
 		"concurrently": "^4.0.1"

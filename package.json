@@ -2,12 +2,10 @@
   "name": "rc-assignment",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && yarn start",
-    "server": "cd server && yarn start",
-    "build-react": "cd client && yarn build",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "build-docker": "cd client && npm i && npm run build && cd .. && cd server && npm i && cd .. && docker build -t bharath/rc-assignment .",
-    "build-docker-compose": "docker-compose up --build"
+    "install": "cd server;npm i;cd ..;cd client;npm i",
+    "build-react": "cd client && node_modules/.bin/yarn build",
+    "server": "",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "license": "UNLICENSED",
   "devDependencies": {

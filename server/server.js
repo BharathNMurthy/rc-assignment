@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 5000;
 const routes = require("./routes");
-const mongoose = require("mongoose");
 const mongoConnection = require("./persistence/monggoseConnection");
 const logger = require("./logging/logs");
 
@@ -17,6 +16,7 @@ app.get("/healthcheck", () => {
 });
 
 app.use("/s/api", routes);
+
 app.use(express.static(__dirname + "/build"));
 
 app.use("/", (req, res) => {
@@ -24,5 +24,5 @@ app.use("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  return logger.getLogger().info(`Listening on port ${port}`);
+  logger.getLogger().info(`Listening on port ${port}`);
 });

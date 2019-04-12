@@ -5,8 +5,6 @@ COPY build /app/build/
 
 WORKDIR /app
 
-EXPOSE 8080
-EXPOSE 3000
-EXPOSE 27017
+EXPOSE 5000
 
 ENTRYPOINT ["node","server.js"]

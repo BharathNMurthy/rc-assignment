@@ -14,20 +14,20 @@ const saveRole = async (req, res) => {
     permission: payload.permission
   });
 
-  roles.save(err => {
-    if (err) {
+  return roles
+    .save()
+    .then(data => {
+      logger.getLogger().info(`Succssfully saved Roles`);
+      res.status(201).json({ success: true });
+    })
+    .catch(err => {
       logger
         .getLogger()
-        .info(`Error occured while saving to Db with error: ${err}`);
-    }
-  });
-
-  res.send(
-    `I received your POST request. This is what you sent me: ${JSON.stringify(
-      payload
-    )}`
-  );
+        .error(`Error occured while saving to Db with error: ${err}`);
+      res.status(500).json({ success: false, errorMessage: "DB Error" });
+    });
 };
+
 router.post("/", saveRole);
 
 module.exports = router;

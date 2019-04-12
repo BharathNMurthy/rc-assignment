@@ -1,15 +1,19 @@
-version: "2"
 
+version: "3.7"
 services:
 
-  web:
-    build: .
+  mongo:
+    image: mongo:latest
     ports:
-      - "3000:3000"
-    # links:
-    #   - mongo
+      - "27017:27017"
+    expose:
+      - "27017"
 
-  # mongo:
-  #   image: mongo
-  #   ports:
-  #     - "27017:27017"
+  app:
+    image: app:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    expose:
+      - "5000"

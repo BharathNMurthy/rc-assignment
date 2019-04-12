@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = new Router();
 const shortid = require("shortid");
+
 const Permissions = require("../persistence/permissions");
 const PermissionsModel = require("../persistence/model/permissions");
 const logger = require("../logging/logs");
@@ -16,9 +17,11 @@ const getPermissions = async (req, res) => {
       return permissionsList;
     })
     .catch(err => {
-      logger.getLogger().info("Error occurred while fetching permissions", err);
+      logger
+        .getLogger()
+        .error("Error occurred while fetching permissions", err);
     });
-  res.send(permissionsRes);
+  res.status(200).json(permissionsRes);
 };
 
 const savePermission = async (req, res) => {
@@ -31,20 +34,20 @@ const savePermission = async (req, res) => {
     permission: payload.permission
   });
 
-  permissions.save(err => {
-    if (err) {
+  return permissions
+    .save()
+    .then(data => {
+      logger.getLogger().info(`Succssfully saved Permission`);
+      res.status(201).json({ success: true });
+    })
+    .catch(err => {
       logger
         .getLogger()
-        .info(`Error occured while saving to Db with error: ${err}`);
-    }
-  });
-
-  res.send(
-    `I received your POST request. This is what you sent me: ${JSON.stringify(
-      payload
-    )}`
-  );
+        .error(`Error occured while saving to Db with error: ${err}`);
+      res.status(500).json({ success: false , errorMessage:'DB Error'});
+    });
 };
+
 router.get("/", getPermissions);
 router.post("/", savePermission);
 
